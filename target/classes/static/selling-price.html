@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selling Prices - Gold Stock Management</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Daily Selling Prices</h1>
+        </header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="articles.html">Articles</a>
+            <a href="gold-rate.html">Gold Rate</a>
+            <a href="selling-price.html" class="active">Selling Prices</a>
+        </nav>
+        <main>
+            <section class="info-section">
+                <p>Prices calculated based on today's gold rate: <strong id="todayRateSpan">...</strong></p>
+            </section>
+
+            <section class="list-section">
+                <table id="sellingPriceTable">
+                    <thead>
+                        <tr>
+                            <th>Article Name</th>
+                            <th>Weight (g)</th>
+                            <th>Base Price</th>
+                            <th>Discount (%)</th>
+                            <th>Final Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', loadSellingPrices);
+    </script>
+</body>
+
+</html>
