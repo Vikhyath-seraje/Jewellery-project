@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue - Tumbe Jewellary Works</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Tumbe Jewellary Works</h1>
+        </header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="catalogue.html" class="active">Catalogue</a>
+            <a href="gold-rate.html">Gold Rate</a>
+            <a href="schemes.html">Gold Schemes</a>
+            <button onclick="toggleAdminMode()" class="btn"
+                style="padding: 5px 10px; margin-left: auto; background-color: #333;">Admin</button>
+        </nav>
+        <main>
+            <!-- Admin Section (Hidden by default) -->
+            <div id="adminSection"
+                style="display: none; border-bottom: 2px solid #eee; margin-bottom: 30px; padding-bottom: 20px;">
+                <h2>Manage Inventory</h2>
+
+                <div class="card" style="text-align: left; margin-bottom: 30px;">
+                    <h3>Add New Article</h3>
+                    <form id="addArticleForm" onsubmit="addArticle(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div class="form-group">
+                                <label for="articleId">Article ID</label>
+                                <input type="text" id="articleId" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="metalType">Metal Type</label>
+                                <select id="metalType" required>
+                                    <option value="GOLD">Gold</option>
+                                    <option value="SILVER">Silver</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="purity">Purity</label>
+                                <select id="purity" required>
+                                    <option value="24K">24K (Pure)</option>
+                                    <option value="22K" selected>22K (Standard)</option>
+                                    <option value="FINE">Fine Silver</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="weight">Weight (grams)</label>
+                                <input type="number" id="weight" step="0.001" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="makingCharges">Making Charges (₹)</label>
+                                <input type="number" id="makingCharges" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="wastage">Wastage (%)</label>
+                                <input type="number" id="wastage" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="imageUrl">Image URL</label>
+                                <input type="text" id="imageUrl" placeholder="https://example.com/image.jpg">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Add Article</button>
+                    </form>
+                </div>
+
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <input type="text" id="searchArticle" placeholder="Search by ID or Name..."
+                        onkeyup="filterArticles()" style="flex-grow: 1;">
+                    <button class="btn" style="background: #d9534f; white-space: nowrap;"
+                        onclick="deleteAllArticles()">Delete All Articles</button>
+                </div>
+
+                <div style="overflow-x: auto;">
+                    <table id="articlesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th>Weight (g)</th>
+                                <th>Making (₹)</th>
+                                <th>Wastage (%)</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Articles will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Our Collection</h2>
+                <div class="filters">
+                    <select id="metalFilter" onchange="filterCatalogue()" style="width: auto;">
+                        <option value="all">All Metals</option>
+                        <option value="GOLD">Gold</option>
+                        <option value="SILVER">Silver</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="catalogueGrid" class="catalogue-grid">
+                <!-- Products will be loaded here -->
+                <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                    Loading collection...
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/app.js?v=1.0"></script>
+    <script>
+        // Initialize catalogue when page loads
+        document.addEventListener('DOMContentLoaded', loadCatalogue);
+    </script>
+</body>
+
+</html>

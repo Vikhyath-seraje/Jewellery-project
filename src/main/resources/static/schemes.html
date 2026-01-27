@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Schemes - Tumbe Jewellary Works</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Tumbe Jewellary Works</h1>
+        </header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="gold-rate.html">Gold Rate</a>
+            <a href="schemes.html" class="active">Gold Schemes</a>
+            <button onclick="window.location.href='catalogue.html'; setTimeout(() => toggleAdminMode(), 100);"
+                class="btn" style="padding: 5px 10px; margin-left: auto; background-color: #333;">Admin</button>
+        </nav>
+        <main>
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="border: none; font-size: 2rem;">Invest in Your Future</h2>
+                <p style="max-width: 600px; margin: 0 auto; color: var(--text-muted);">
+                    Secure your future with our exclusive gold savings schemes. Smart investment plans tailored for you.
+                </p>
+            </div>
+
+            <div class="dashboard-cards">
+                <!-- Scheme 1 -->
+                <div class="card" style="text-align: left;">
+                    <h2
+                        style="color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
+                        Golden Future Plan</h2>
+                    <p style="font-size: 1.1rem; color: var(--white); margin-bottom: 20px;">
+                        Pay for 11 months, and we pay the 12th installment!
+                    </p>
+                    <ul style="list-style: none; padding: 0; color: var(--text-muted); margin-bottom: 30px;">
+                        <li style="margin-bottom: 10px;">✓ Minimum Installment: ₹ 1,000</li>
+                        <li style="margin-bottom: 10px;">✓ Duration: 11 Months</li>
+                        <li style="margin-bottom: 10px;">✓ Benefit: 100% discount on making charges</li>
+                        <li style="margin-bottom: 10px;">✓ Bonus: 1 Month Installment Free</li>
+                    </ul>
+                    <button class="btn" onclick="alert('Please visit our store to enroll in this scheme.')">Enroll
+                        Now</button>
+                </div>
+
+                <!-- Scheme 2 -->
+                <div class="card" style="text-align: left;">
+                    <h2 style="color: #C0C0C0; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
+                        Silver Savings</h2>
+                    <p style="font-size: 1.1rem; color: var(--white); margin-bottom: 20px;">
+                        Accumulate silver in small quantities every month.
+                    </p>
+                    <ul style="list-style: none; padding: 0; color: var(--text-muted); margin-bottom: 30px;">
+                        <li style="margin-bottom: 10px;">✓ Minimum Installment: ₹ 500</li>
+                        <li style="margin-bottom: 10px;">✓ Duration: Flexible</li>
+                        <li style="margin-bottom: 10px;">✓ Benefit: No wastage on redemption</li>
+                        <li style="margin-bottom: 10px;">✓ Lock-in Period: 6 Months</li>
+                    </ul>
+                    <button class="btn btn-secondary"
+                        onclick="alert('Please visit our store to enroll in this scheme.')">Enroll Now</button>
+                </div>
+
+                <!-- Scheme 3 -->
+                <div class="card" style="text-align: left;">
+                    <h2
+                        style="color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 15px;">
+                        Wedding Planner</h2>
+                    <p style="font-size: 1.1rem; color: var(--white); margin-bottom: 20px;">
+                        Plan your dream wedding jewellery with fixed gold rates.
+                    </p>
+                    <ul style="list-style: none; padding: 0; color: var(--text-muted); margin-bottom: 30px;">
+                        <li style="margin-bottom: 10px;">✓ Lock Gold Rate on day of payment</li>
+                        <li style="margin-bottom: 10px;">✓ Duration: 12 - 24 Months</li>
+                        <li style="margin-bottom: 10px;">✓ Benefit: Flat 50% off on VA</li>
+                        <li style="margin-bottom: 10px;">✓ Exchange old gold at 0% deduction</li>
+                    </ul>
+                    <button class="btn" onclick="alert('Please visit our store to enroll in this scheme.')">Enroll
+                        Now</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/app.js?v=1.0"></script>
+</body>
+
+</html>

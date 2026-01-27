@@ -42,6 +42,10 @@ public class ArticleService {
         articleRepository.deleteById(id);
     }
 
+    public void deleteAllArticles() {
+        articleRepository.deleteAll();
+    }
+
     public ArticleCostHistory calculateCost(Article article, Double goldRate) {
         double manufacturingCost = (article.getWeightGrams() * goldRate)
                 + article.getMakingCharges()
@@ -50,25 +54,21 @@ public class ArticleService {
         double sellingPrice = (article.getWeightGrams() * goldRate)
                 + article.getMakingCharges()
                 + (article.getWeightGrams() * goldRate * article.getWastagePercentage() / 100);
-        
-        // Note: The formula for manufacturing cost and selling price in the requirements 
-        // seems identical in structure but uses different rates (manufacture date rate vs current date rate).
-        // Here we calculate based on the provided 'goldRate'.
 
         ArticleCostHistory costHistory = new ArticleCostHistory();
         costHistory.setArticle(article);
         costHistory.setDate(LocalDate.now());
         costHistory.setGoldRate(goldRate);
-        costHistory.setCalculatedCost(manufacturingCost); // This might need adjustment if we strictly separate mfg cost from selling price logic
+        costHistory.setCalculatedCost(manufacturingCost);
         costHistory.setSellingPrice(sellingPrice);
-        
+
         return costHistory;
     }
 
     public void updateDailyPrices() {
         Double todayRate = goldRateService.getTodayRate();
         if (todayRate == null) {
-            // Try to fetch or trigger update
+
             goldRateService.updateDailyGoldRate();
             todayRate = goldRateService.getTodayRate();
         }
@@ -76,7 +76,7 @@ public class ArticleService {
         if (todayRate != null) {
             List<Article> articles = articleRepository.findAll();
             for (Article article : articles) {
-                // Check if already calculated for today
+
                 if (articleCostHistoryRepository.findByArticleIdAndDate(article.getId(), LocalDate.now()).isEmpty()) {
                     ArticleCostHistory cost = calculateCost(article, todayRate);
                     articleCostHistoryRepository.save(cost);
@@ -84,9 +84,9 @@ public class ArticleService {
             }
         }
     }
-    
+
     public List<ArticleCostHistory> getTodaySellingPrices() {
-        updateDailyPrices(); // Ensure they are calculated
+        updateDailyPrices();
         return articleCostHistoryRepository.findByDate(LocalDate.now());
     }
 }

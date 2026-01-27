@@ -16,12 +16,11 @@ public class GoldRateService {
     @Autowired
     private GoldRateHistoryRepository goldRateHistoryRepository;
 
-    // Real API integration
-    public Double fetchGoldRateFromApi() {
+    public void fetchGoldRateFromApi() {
         try {
             okhttp3.OkHttpClient client = new okhttp3.OkHttpClient().newBuilder().build();
             okhttp3.Request request = new okhttp3.Request.Builder()
-                    .url("https://gold.g.apised.com/v1/latest?metals=XAU,XAG,XPT,XPD&base_currency=INR&currencies=INR&weight_unit=gram")
+                    .url("https://gold.g.apised.com/v1/latest?metals=XAU,XAG&base_currency=INR&currencies=INR&weight_unit=gram")
                     .get()
                     .addHeader("x-api-key", "sk_4895F8e7a18178b8254Cd3E9a1dCb00c5c9A25FFf27cDDd3")
                     .build();
@@ -29,65 +28,88 @@ public class GoldRateService {
             try (okhttp3.Response response = client.newCall(request).execute()) {
                 if (!response.isSuccessful()) {
                     System.err.println("API call failed: " + response);
-                    return null;
+                    return;
                 }
-                
+
                 String responseBody = response.body().string();
                 System.out.println("API Response: " + responseBody);
-                
-                // Parse JSON
+
                 com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
                 com.fasterxml.jackson.databind.JsonNode root = mapper.readTree(responseBody);
-                
-                // Navigate to the correct path: data.metal_prices.XAU.price
-                // Response structure: {"status":"success","data":{"metal_prices":{"XAU":{"price":12110.34734,...}}}}
-                com.fasterxml.jackson.databind.JsonNode dataNode = root.path("data");
-                com.fasterxml.jackson.databind.JsonNode metalPricesNode = dataNode.path("metal_prices");
+                com.fasterxml.jackson.databind.JsonNode metalPricesNode = root.path("data").path("metal_prices");
+
+                LocalDate today = LocalDate.now();
+
+                // Process Gold (XAU)
                 com.fasterxml.jackson.databind.JsonNode xauNode = metalPricesNode.path("XAU");
-                com.fasterxml.jackson.databind.JsonNode priceNode = xauNode.path("price");
-                
-                if (!priceNode.isMissingNode() && priceNode.isNumber()) {
-                    double ratePerGram = priceNode.asDouble();
-                    System.out.println("Extracted Gold Rate (INR per gram): " + ratePerGram);
-                    return ratePerGram;
+                if (!xauNode.isMissingNode()) {
+                    double goldRate24k = xauNode.path("price").asDouble();
+                    saveRate(today, goldRate24k, "GOLD", "24K");
+                    saveRate(today, goldRate24k * 0.916, "GOLD", "22K"); // Approx 22K rate
                 }
-                
-                System.err.println("Failed to find price in expected path");
-                return null;
+
+                // Process Silver (XAG)
+                com.fasterxml.jackson.databind.JsonNode xagNode = metalPricesNode.path("XAG");
+                if (!xagNode.isMissingNode()) {
+                    double silverRate = xagNode.path("price").asDouble();
+                    saveRate(today, silverRate, "SILVER", "FINE");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
     }
 
-    @Scheduled(cron = "0 0 9 * * ?") // Runs every day at 9 AM
-    public void updateDailyGoldRate() {
-        LocalDate today = LocalDate.now();
-        if (goldRateHistoryRepository.findByDate(today).isPresent()) {
-            return; // Already updated for today
+    private void saveRate(LocalDate date, Double rate, String metalType, String purity) {
+        Optional<GoldRateHistory> existing = goldRateHistoryRepository.findAll().stream()
+                .filter(h -> h.getDate().equals(date) && h.getMetalType().equals(metalType)
+                        && h.getPurity().equals(purity))
+                .findFirst();
+
+        if (existing.isPresent()) {
+            return;
         }
 
-        Double rate = fetchGoldRateFromApi();
         GoldRateHistory history = new GoldRateHistory();
-        history.setDate(today);
+        history.setDate(date);
         history.setRatePerGram(rate);
+        history.setMetalType(metalType);
+        history.setPurity(purity);
         goldRateHistoryRepository.save(history);
-        System.out.println("Updated gold rate for " + today + ": " + rate);
+        System.out.println("Saved rate: " + metalType + " " + purity + " - " + rate);
     }
 
-    public void manualUpdate(Double rate) {
+    @Scheduled(cron = "0 0 9 * * ?")
+    public void updateDailyGoldRate() {
+        fetchGoldRateFromApi();
+    }
+
+    public void manualUpdate(Double rate, String metalType, String purity) {
         LocalDate today = LocalDate.now();
-        GoldRateHistory history = goldRateHistoryRepository.findByDate(today)
-                .orElse(new GoldRateHistory());
+        Optional<GoldRateHistory> existing = goldRateHistoryRepository.findAll().stream()
+                .filter(h -> h.getDate().equals(today) && h.getMetalType().equals(metalType)
+                        && h.getPurity().equals(purity))
+                .findFirst();
+
+        GoldRateHistory history = existing.orElse(new GoldRateHistory());
         history.setDate(today);
         history.setRatePerGram(rate);
+        history.setMetalType(metalType);
+        history.setPurity(purity);
         goldRateHistoryRepository.save(history);
     }
 
-    public Double getTodayRate() {
-        return goldRateHistoryRepository.findByDate(LocalDate.now())
+    public Double getTodayRate(String metalType, String purity) {
+        return goldRateHistoryRepository.findAll().stream()
+                .filter(h -> h.getDate().equals(LocalDate.now()) && h.getMetalType().equals(metalType)
+                        && h.getPurity().equals(purity))
                 .map(GoldRateHistory::getRatePerGram)
+                .findFirst()
                 .orElse(null);
+    }
+
+    // Fallback for existing calls - defaults to Gold 22K
+    public Double getTodayRate() {
+        return getTodayRate("GOLD", "22K");
     }
 }

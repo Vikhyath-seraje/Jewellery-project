@@ -21,17 +21,26 @@ public class GoldRateController {
     private GoldRateHistoryRepository goldRateHistoryRepository;
 
     @GetMapping("/today")
-    public ResponseEntity<Double> getTodayRate() {
-        Double rate = goldRateService.getTodayRate();
-        if (rate == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getTodayRate(@RequestParam(required = false) String metalType,
+            @RequestParam(required = false) String purity) {
+        if (metalType != null && purity != null) {
+            Double rate = goldRateService.getTodayRate(metalType, purity);
+            if (rate == null)
+                return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(rate);
         }
+        // Default to Gold 22K if not specified (backward compatibility)
+        Double rate = goldRateService.getTodayRate();
+        if (rate == null)
+            return ResponseEntity.notFound().build();
         return ResponseEntity.ok(rate);
     }
 
     @PostMapping("/update")
-    public ResponseEntity<Void> manualUpdate(@RequestParam Double rate) {
-        goldRateService.manualUpdate(rate);
+    public ResponseEntity<Void> manualUpdate(@RequestParam Double rate,
+            @RequestParam(defaultValue = "GOLD") String metalType,
+            @RequestParam(defaultValue = "22K") String purity) {
+        goldRateService.manualUpdate(rate, metalType, purity);
         return ResponseEntity.ok().build();
     }
 

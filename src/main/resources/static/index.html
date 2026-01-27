@@ -4,41 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gold Stock Management</title>
+    <title>Tumbe Jewellary Works</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <div class="container">
         <header>
-            <h1 style="color: var(--primary-color);">Tumbe Jewellary Works</h1>
+            <h1>Tumbe Jewellary Works</h1>
+            <p style="color: var(--text-muted); margin-top: 10px; letter-spacing: 2px;">EXQUISITE CRAFTSMANSHIP SINCE
+                1995</p>
         </header>
         <nav>
             <a href="index.html" class="active">Home</a>
-            <a href="articles.html">Articles</a>
+            <a href="catalogue.html">Catalogue</a>
             <a href="gold-rate.html">Gold Rate</a>
-            <a href="selling-price.html">Selling Prices</a>
+            <a href="schemes.html">Gold Schemes</a>
+            <button onclick="window.location.href='catalogue.html'; setTimeout(() => toggleAdminMode(), 100);"
+                class="btn" style="padding: 5px 10px; margin-left: auto; background-color: #333;">Admin</button>
         </nav>
         <main>
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="border: none; font-size: 2rem;">Welcome to Premium Jewellery Management</h2>
+                <p style="max-width: 600px; margin: 0 auto; color: var(--text-muted);">
+                    Manage your inventory, track daily gold and silver rates, and explore our exclusive schemes.
+                </p>
+            </div>
+
             <div class="dashboard-cards">
                 <div class="card">
-                    <h2>Manage Articles</h2>
-                    <p>Add, edit, or view gold articles in your inventory.</p>
-                    <a href="articles.html" class="btn">Go to Articles</a>
+                    <h2>View Catalogue</h2>
+                    <p>Browse our exclusive collection of Gold and Silver jewellery.</p>
+                    <a href="catalogue.html" class="btn">Browse Collection</a>
                 </div>
                 <div class="card">
-                    <h2>Gold Rate</h2>
-                    <p>View history and update daily gold rates.</p>
-                    <a href="gold-rate.html" class="btn">Manage Rates</a>
+                    <h2>Gold & Silver Rates</h2>
+                    <p>Update and track daily market rates for all metals.</p>
+                    <a href="gold-rate.html" class="btn btn-secondary">Update Rates</a>
                 </div>
                 <div class="card">
-                    <h2>Daily Prices</h2>
-                    <p>Calculate selling prices based on today's rate.</p>
-                    <a href="selling-price.html" class="btn">View Prices</a>
+                    <h2>Gold Schemes</h2>
+                    <p>Invest in your future with our exclusive gold savings plans.</p>
+                    <a href="schemes.html" class="btn btn-secondary">View Schemes</a>
                 </div>
             </div>
         </main>
     </div>
+    <script src="js/app.js?v=1.0"></script>
 </body>
 
 </html>

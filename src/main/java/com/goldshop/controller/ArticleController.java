@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/articles")
-@CrossOrigin(origins = "*") // Allow frontend access
+@CrossOrigin(origins = "*")
 public class ArticleController {
 
     @Autowired
@@ -43,7 +43,11 @@ public class ArticleController {
                     article.setWeightGrams(articleDetails.getWeightGrams());
                     article.setMakingCharges(articleDetails.getMakingCharges());
                     article.setWastagePercentage(articleDetails.getWastagePercentage());
-                    // manufacturedDate is usually fixed, but can be updated if needed
+                    article.setMetalType(articleDetails.getMetalType());
+                    article.setPurity(articleDetails.getPurity());
+                    article.setImageUrl(articleDetails.getImageUrl());
+                    article.setManufacturedDate(articleDetails.getManufacturedDate());
+
                     return ResponseEntity.ok(articleService.saveArticle(article));
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -52,6 +56,12 @@ public class ArticleController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
         articleService.deleteArticle(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity<Void> deleteAllArticles() {
+        articleService.deleteAllArticles();
         return ResponseEntity.ok().build();
     }
 }

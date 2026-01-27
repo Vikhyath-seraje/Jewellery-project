@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Test</title>
+</head>
+
+<body>
+    <h1>Admin Function Test</h1>
+    <button onclick="alert('Button Click Works!')">Test 1: Basic Button</button>
+    <br><br>
+    <button onclick="testAdmin()">Test 2: Admin Function</button>
+
+    <script src="js/app.js"></script>
+    <script>
+        function testAdmin() {
+            if (typeof toggleAdminMode === 'function') {
+                alert('toggleAdminMode function EXISTS in app.js');
+                toggleAdminMode();
+            } else {
+                alert('ERROR: toggleAdminMode function NOT FOUND in app.js');
+            }
+        }
+    </script>
+</body>
+
+</html>
