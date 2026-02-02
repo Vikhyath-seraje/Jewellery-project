@@ -26,6 +26,11 @@ public class ArticleController {
         return articleService.getAllArticles();
     }
 
+    @GetMapping("/category/{category}")
+    public List<Article> getArticlesByCategory(@PathVariable String category) {
+        return articleService.getArticlesByCategory(category);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Article> getArticleById(@PathVariable Long id) {
         return articleService.getArticleById(id)
@@ -47,6 +52,7 @@ public class ArticleController {
                     article.setPurity(articleDetails.getPurity());
                     article.setImageUrl(articleDetails.getImageUrl());
                     article.setManufacturedDate(articleDetails.getManufacturedDate());
+                    article.setCategory(articleDetails.getCategory());
 
                     return ResponseEntity.ok(articleService.saveArticle(article));
                 })

@@ -1,0 +1,10 @@
+{
+  "articleId": "TEST001",
+  "name": "Test Earring",
+  "category": "Earring",
+  "weightGrams": 5.0,
+  "makingCharges": 500.0,
+  "wastagePercentage": 10.0,
+  "metalType": "GOLD",
+  "purity": "22K"
+}

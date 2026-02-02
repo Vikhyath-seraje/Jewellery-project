@@ -38,6 +38,7 @@ async function addArticle(event) {
     const article = {
         articleId: document.getElementById('articleId').value,
         name: document.getElementById('name').value,
+        category: document.getElementById('category').value,
         description: document.getElementById('description').value,
         metalType: document.getElementById('metalType').value,
         purity: document.getElementById('purity').value,
@@ -280,6 +281,7 @@ function renderCatalogue(articles, rates) {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.dataset.metal = article.metalType; // For filtering
+        card.dataset.category = article.category; // For filtering
 
         const imageHtml = article.imageUrl
             ? `<img src="${article.imageUrl}" alt="${article.name}">`
@@ -334,11 +336,15 @@ function renderCatalogue(articles, rates) {
 }
 
 function filterCatalogue() {
-    const filter = document.getElementById('metalFilter').value;
+    const metalFilter = document.getElementById('metalFilter').value;
+    const categoryFilter = document.getElementById('categoryFilter').value;
     const cards = document.querySelectorAll('.product-card');
 
     cards.forEach(card => {
-        if (filter === 'all' || card.dataset.metal === filter) {
+        const metalMatch = metalFilter === 'all' || card.dataset.metal === metalFilter;
+        const categoryMatch = categoryFilter === 'all' || card.dataset.category === categoryFilter;
+
+        if (metalMatch && categoryMatch) {
             card.style.display = 'block';
         } else {
             card.style.display = 'none';

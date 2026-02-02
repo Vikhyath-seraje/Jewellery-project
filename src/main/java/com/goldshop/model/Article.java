@@ -41,6 +41,9 @@ public class Article {
     @Column(name = "manufactured_date")
     private LocalDate manufacturedDate;
 
+    @Column(name = "category")
+    private String category; // e.g., "Earring", "Ring", "Bangle"
+
     public Long getId() {
         return id;
     }
@@ -127,5 +130,13 @@ public class Article {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

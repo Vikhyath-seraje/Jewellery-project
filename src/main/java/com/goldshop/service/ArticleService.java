@@ -34,15 +34,21 @@ public class ArticleService {
         return articleRepository.findAll();
     }
 
+    public List<Article> getArticlesByCategory(String category) {
+        return articleRepository.findByCategory(category);
+    }
+
     public Optional<Article> getArticleById(Long id) {
         return articleRepository.findById(id);
     }
 
     public void deleteArticle(Long id) {
+        articleCostHistoryRepository.deleteByArticleId(id);
         articleRepository.deleteById(id);
     }
 
     public void deleteAllArticles() {
+        articleCostHistoryRepository.deleteAll();
         articleRepository.deleteAll();
     }
 
@@ -66,19 +72,20 @@ public class ArticleService {
     }
 
     public void updateDailyPrices() {
-        Double todayRate = goldRateService.getTodayRate();
-        if (todayRate == null) {
+        List<Article> articles = articleRepository.findAll();
+        for (Article article : articles) {
+            String metalType = article.getMetalType();
+            String purity = article.getPurity();
+            Double rate = goldRateService.getTodayRate(metalType, purity);
 
-            goldRateService.updateDailyGoldRate();
-            todayRate = goldRateService.getTodayRate();
-        }
+            // Fallback to default if specific rate not found
+            if (rate == null && "GOLD".equalsIgnoreCase(metalType)) {
+                rate = goldRateService.getTodayRate();
+            }
 
-        if (todayRate != null) {
-            List<Article> articles = articleRepository.findAll();
-            for (Article article : articles) {
-
+            if (rate != null) {
                 if (articleCostHistoryRepository.findByArticleIdAndDate(article.getId(), LocalDate.now()).isEmpty()) {
-                    ArticleCostHistory cost = calculateCost(article, todayRate);
+                    ArticleCostHistory cost = calculateCost(article, rate);
                     articleCostHistoryRepository.save(cost);
                 }
             }

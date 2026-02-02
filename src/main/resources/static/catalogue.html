@@ -18,6 +18,7 @@
             <a href="catalogue.html" class="active">Catalogue</a>
             <a href="gold-rate.html">Gold Rate</a>
             <a href="schemes.html">Gold Schemes</a>
+            <a href="contact.html">Contact Us</a>
             <button onclick="toggleAdminMode()" class="btn"
                 style="padding: 5px 10px; margin-left: auto; background-color: #333;">Admin</button>
         </nav>
@@ -38,6 +39,18 @@
                             <div class="form-group">
                                 <label for="name">Name</label>
                                 <input type="text" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select id="category" required>
+                                    <option value="Earring">Earring</option>
+                                    <option value="Ring">Ring</option>
+                                    <option value="Bangle">Bangle</option>
+                                    <option value="Necklace">Necklace</option>
+                                    <option value="Chain">Chain</option>
+                                    <option value="Bracelet">Bracelet</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="metalType">Metal Type</label>
@@ -114,6 +127,16 @@
                         <option value="all">All Metals</option>
                         <option value="GOLD">Gold</option>
                         <option value="SILVER">Silver</option>
+                    </select>
+                    <select id="categoryFilter" onchange="filterCatalogue()" style="width: auto;">
+                        <option value="all">All Categories</option>
+                        <option value="Earring">Earring</option>
+                        <option value="Ring">Ring</option>
+                        <option value="Bangle">Bangle</option>
+                        <option value="Necklace">Necklace</option>
+                        <option value="Chain">Chain</option>
+                        <option value="Bracelet">Bracelet</option>
+                        <option value="Other">Other</option>
                     </select>
                 </div>
             </div>
